@@ -3,7 +3,7 @@ from django.forms import ModelForm, TextInput, PasswordInput, DateInput
 
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
-from main_app.models import User
+from main_app.models import User, SupportRequest
 
 
 class AuthUserForm(AuthenticationForm):
@@ -11,12 +11,11 @@ class AuthUserForm(AuthenticationForm):
     password = forms.CharField(widget=PasswordInput(attrs={'class': 'form-control'}))
 
 
-class AddUserForm(UserCreationForm):
+class UpdUserForm(ModelForm):
     class Meta:
         model = User
         fields = ['email',
-                  'password1',
-                  'password2',
+
                   'first_name',
                   'last_name',
                   # 'document_id',
@@ -35,5 +34,45 @@ class AddUserForm(UserCreationForm):
                 'type': 'date'
             }),
 
+        }
 
+
+class AddUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['email',
+                  'password1',
+                  'password2',
+                  'first_name',
+                  'last_name',
+                  # 'document_id',
+                  'position',
+                  # 'avatar'
+                  'is_boss',
+                  'birth_date',
+                  'user_phone_num',
+                  'groups',
+
+                  ]
+        widgets = {
+
+            "birth_date": DateInput(attrs={
+                # 'class': 'form-control',
+                'placeholder': 'День рождения',
+                'type': 'date'
+            }),
+
+        }
+
+
+class SupportRequestForm(forms.ModelForm):
+    class Meta:
+        model = SupportRequest
+        fields = ['request_theme', 'about']
+
+        widgets = {
+            'request_theme': forms.TextInput(attrs={'class': 'form-control'}),
+            'about': forms.Textarea(attrs={'class': 'form-control'}),
+            # 'request_from': forms.Select(attrs={'class': 'form-control'}),
+            # 'is_done': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
