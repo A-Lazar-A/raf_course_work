@@ -131,15 +131,8 @@ def webcam_face_recognition():
                 if worker not in entered_workers:
                     entered_workers.append(worker)
                     print(f"Match found: {worker}")
-
                 cv2.putText(frame, worker, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2,
                             cv2.LINE_AA)
-                if worker in entered_workers:
-                    return worker
-                else:
-                    cap.release()
-                    cv2.destroyAllWindows()
-                    return None
 
         cv2.imshow('Webcam', frame)
 
