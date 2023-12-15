@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/hr_main.css' %}"/>
+
+<div class="container">
+    <h2>User Management</h2>
+
+    <!-- List of Users -->
+    <div class="user-list">
+        <h3>User List</h3>
+        <ul class="list-group">
+            {% for user in users %}
+                <li class="list-group-item"><a href="{% url 'user_detail' user.id %}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- User Details -->
+    <div class="user-details">
+        <h3>User Details</h3>
+        <p>Select a user to view details.</p>
+    </div>
+
+    <!-- Add User Form -->
+<div class="add-user-form">
+    <h3>Add User</h3>
+    <a href="{% url 'add_user' %}" class="btn btn-primary">Add User</a>
+</div>
+</div>
+{% endblock %}

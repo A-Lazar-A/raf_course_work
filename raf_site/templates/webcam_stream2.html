@@ -1,0 +1,30 @@
+<!-- webcam_stream.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Stream</title>
+</head>
+<body>
+
+<img id="webcam-stream2" width="640" height="480">
+
+<script>
+    const webcamStream = new WebSocket('ws://' + window.location.host + '/ws/video_stream2/');
+
+    webcamStream.onmessage = function (event) {
+        try {
+            const data = JSON.parse(event.data);
+
+            if (data.image2) {
+                document.getElementById('webcam-stream2').src = 'data:image/jpeg;base64,' + data.image2;
+            }
+        } catch (error) {
+            console.error('Error parsing JSON or updating image:', error);
+        }
+    };
+</script>
+</body>
+</html>
