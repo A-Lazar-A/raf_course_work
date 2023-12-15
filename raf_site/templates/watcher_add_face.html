@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/guard.css' %}"/>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Face Registration</h5>
+
+            <!-- User Photo Template -->
+            <div class="text-center mb-3">
+                <img id="webcam-stream1" width="640" height="480">
+
+
+                <script>
+                    function getCSRFToken() {
+                        const csrfCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('csrftoken='));
+                        if (csrfCookie) {
+                            return csrfCookie.split('=')[1];
+                        }
+                        return null;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/register_faces/{{selected_user.id}}/",
+                        headers: {
+                            "X-CSRFToken": getCSRFToken(),
+                        },
+
+                        success: function () {
+                            // Код, который выполнится после успешного выполнения POST-запроса
+                            console.log('data');
+                            showRegistrationCompleteMessage();
+                        },
+                    });
+                    const webcamStream = new WebSocket('ws://' + window.location.host + '/ws/video_stream1/');
+
+                    webcamStream.onmessage = function (event) {
+                        try {
+                            const data = JSON.parse(event.data);
+                            if (data.image1) {
+                                document.getElementById('webcam-stream1').src = 'data:image/jpeg;base64,' + data.image1;
+                            }
+
+                        } catch (error) {
+                            console.error('Error parsing JSON or updating image:', error);
+                        }
+                    };
+
+                    function showRegistrationCompleteMessage() {
+                        // Создайте элемент для надписи
+                        const messageElement = document.createElement('div');
+                        messageElement.innerHTML = '<h1>REGISTRATION COMPLETE</h1>';
+
+                        // Создайте кнопку для перехода на предыдущую страницу
+                        const backButton = document.createElement('button');
+                        backButton.innerHTML = 'Go Back';
+                        backButton.addEventListener('click', function () {
+                            history.back(); // Используйте этот метод для перехода на предыдущую страницу
+                        });
+
+                        // Установите стили для элемента с надписью
+                        messageElement.style.position = 'fixed';
+                        messageElement.style.top = '0';
+                        messageElement.style.left = '0';
+                        messageElement.style.width = '100%';
+                        messageElement.style.height = '100%';
+                        messageElement.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+                        messageElement.style.display = 'flex';
+                        messageElement.style.flexDirection = 'column'; // Добавлен стиль для вертикального выравнивания элементов
+                        messageElement.style.justifyContent = 'center';
+                        messageElement.style.alignItems = 'center';
+
+                        // Добавьте элементы в блок сообщения
+                        messageElement.appendChild(backButton);
+
+                        // Добавьте блок сообщения в body
+                        document.body.appendChild(messageElement);
+                    }
+                </script>
+            </div>
+
+            <div class="profile__about">
+                <h3>Name</h3>
+                <p>
+                    {{selected_user.first_name}}
+                </p>
+                <h3>Last Name</h3>
+                <p>
+                    {{selected_user.last_name}}
+                </p>
+                <h3>Position</h3>
+                <p>
+                    {{selected_user.position}}
+                </p>
+                <h3>Email</h3>
+                <p>
+                    {{selected_user.email}}
+                </p>
+                <h3>Phone number</h3>
+                <p>
+                    {{selected_user.user_phone_num}}
+                </p>
+                <h3>Birth date</h3>
+                <p>
+                    {{selected_user.birth_date}}
+                </p>
+                <h3>Group</h3>
+                <p>
+                    {{selected_user.group.name}}
+                </p>
+                <!--                <h3>About</h3>-->
+                <!--                <p>-->
+                <!--                    {{selected_user.about}}-->
+                <!--                </p>-->
+            </div>
+
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Period</th>
+                <th>Work Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1 day</td>
+                <td>{{selected_user.work_time_1days}}</td>
+            </tr>
+            <tr>
+                <td>7 days</td>
+                <td>{{selected_user.work_time_7days}}</td>
+            </tr>
+            <tr>
+                <td>30 days</td>
+                <td>{{selected_user.work_time_30days}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+{% endblock %}

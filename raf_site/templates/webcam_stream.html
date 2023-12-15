@@ -1,0 +1,39 @@
+<!-- webcam_stream.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Stream</title>
+</head>
+<body>
+<img id="webcam-stream1" width="640" height="480">
+<div id="face-info" style="display: none;">Face Recognized! ID: <span id="face-id"></span></div>
+
+<script>
+    const webcamStream = new WebSocket('ws://' + window.location.host + '/ws/video_stream1/');
+
+    webcamStream.onmessage = function (event) {
+        try {
+            const data = JSON.parse(event.data);
+            if (data.face_recognized) {
+                // Отобразить надпись и ID лица
+                document.getElementById('face-info').style.display = 'block';
+                document.getElementById('face-id').innerText = data.face_recognized.id;
+                document.getElementById('face-id').innerText += ' ' + data.face_recognized.first_name;
+                document.getElementById('face-id').innerText += ' ' + data.face_recognized.last_name;
+                console.log(data.face_recognized)
+            }
+
+            if (data.image1) {
+                document.getElementById('webcam-stream1').src = 'data:image/jpeg;base64,' + data.image1;
+            }
+
+        } catch (error) {
+            console.error('Error parsing JSON or updating image:', error);
+        }
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <h2>Download Page</h2>
+    <form method="post" action="{% url 'download_file' %}">
+        {% csrf_token %}
+        <button type="submit">Download File</button>
+    </form>
+{% endblock %}
+

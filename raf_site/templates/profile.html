@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="mb-4">User Profile</h2>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+
+
+          <div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+              <li class="list-group-item"><strong>Name:</strong> {{ user.first_name }}</li>
+              <li class="list-group-item"><strong>Last Name:</strong> {{ user.last_name }}</li>
+              <li class="list-group-item"><strong>Position:</strong> {{ user.position }}</li>
+              <li class="list-group-item"><strong>Boss:</strong> {% if user.is_boss %}Yes{% else %}No{% endif %}</li>
+              <li class="list-group-item"><strong>Birth Date:</strong> {{ user.birth_date }}</li>
+              <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+              <li class="list-group-item"><strong>Phone Number:</strong> {{ user.user_phone_num }}</li>
+              <li class="list-group-item"><strong>Work Time (30 days):</strong> {{ user.work_time_30days }}</li>
+              <li class="list-group-item"><strong>Work Time (7 days):</strong> {{ user.work_time_7days }}</li>
+              <li class="list-group-item"><strong>Work Time (1 day):</strong> {{ user.work_time_1days }}</li>
+              <li class="list-group-item"><strong>On Holiday:</strong> {% if user.is_on_holiday %}Yes{% else %}No{% endif %}</li>
+              <li class="list-group-item"><strong>Sick:</strong> {% if user.is_sick %}Yes{% else %}No{% endif %}</li>
+            </ul>
+          </div>
+          <div class="ml-4">
+            {% if user.avatar %}
+              <img src="{{ user.avatar.url }}" alt="User Avatar" class="img-fluid rounded" style="max-width: 150px; position: absolute; top: 0; right: 0;">
+            {% else %}
+              <img src="{% static 'default_avatar.jpg' %}" alt="Default Avatar" class="img-fluid rounded" style="max-width: 150px; position: absolute; top: 0; right: 0;">
+            {% endif %}
+          </div>
+
+        </div>
+
+        <div class="mt-4">
+          <a href="{% url 'submit_support_request' %}" class="btn btn-primary">Request Support</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

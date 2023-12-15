@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/guard.css' %}"/>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">User Profile</h5>
+
+            <!-- User Photo Template -->
+            <div class="text-center mb-3">
+                <div class="photo-template"></div>
+            </div>
+
+            <!-- User Information -->
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" value="John" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" value="Doe" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="jobTitle">Job Title:</label>
+                <input type="text" class="form-control" id="jobTitle" value="Software Developer" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="arrivalTime">Time of Arrival:</label>
+                <input type="text" class="form-control" id="arrivalTime" value="08:30 AM" readonly>
+            </div>
+        </div>
+    </div>
+</div>
+
+ {% endblock %}
